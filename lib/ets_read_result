@@ -1,0 +1,88 @@
+
+
+lookup in handle_call:
+
+iex(6)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 1907 ms, TPS: 524383.8489774516.
+:ok
+iex(7)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 1903 ms, TPS: 525486.0746190225.
+:ok
+iex(8)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 1983 ms, TPS: 504286.4346949067.
+iex(1)>  EtsTest.bench_read 500, 10000
+total: 5000000, elapsed: 11265 ms, TPS: 443852.64092321345.
+:ok
+
+
+----------------------------------------------------------
+
+lookup in get with read_concurrency=true:
+
+iex(6)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 54 ms, TPS: 18518518.51851852.
+:ok
+iex(7)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 55 ms, TPS: 18181818.18181818.
+:ok
+iex(8)> EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 54 ms, TPS: 18518518.51851852.
+:ok
+iex(9)> EtsTest.bench_read 500, 10000
+total: 5000000, elapsed: 282 ms, TPS: 17730496.45390071.
+
+------------------------------------------------------------
+
+
+lookup in get with read_concurrency=false:
+
+iex(1)>  EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 96 ms, TPS: 10416666.666666666.
+:ok
+iex(2)>  EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 98 ms, TPS: 10204081.632653061.
+:ok
+iex(3)>  EtsTest.bench_read 100, 10000
+total: 1000000, elapsed: 96 ms, TPS: 10416666.666666666.
+:ok
+iex(4)>  EtsTest.bench_read 500, 10000
+total: 5000000, elapsed: 487 ms, TPS: 10266940.45174538.
+
+
+read_concurrency > handle_call
+
+-----------------------------------------------------------
+
+read concurrency and write handle_cast:
+
+iex(2)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 442 ms, TPS: 2262443.438914027.
+:ok
+iex(3)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 342 ms, TPS: 2923976.6081871344.
+:ok
+iex(4)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 347 ms, TPS: 2881844.380403458.
+:ok
+iex(5)> EtsTest.bench_read_write 500, 10000
+total: 5000000, elapsed: 2486 ms, TPS: 2011263.0732099758.
+
+
+------------------------------------------------------------
+
+read concurrency and write concurrency:
+
+iex(1)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 1772 ms, TPS: 564334.0857787811.
+:ok
+iex(2)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 1768 ms, TPS: 565610.8597285068.
+:ok
+iex(3)> EtsTest.bench_read_write 100, 10000
+total: 1000000, elapsed: 1756 ms, TPS: 569476.0820045557.
+:ok
+iex(4)> EtsTest.bench_read_write 500, 10000
+total: 5000000, elapsed: 9242 ms, TPS: 541008.4397316598.
+
+
+read_concurrency_write_handle_cast > read_concurrency_write_concurrency

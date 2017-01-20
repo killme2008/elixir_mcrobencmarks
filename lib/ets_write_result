@@ -1,0 +1,71 @@
+;; This buffer is for notes you don't want to save, and for Lisp evaluation.
+;; If you want to create a file, visit that file with C-x C-f,
+;; then enter the text in that file's own buffer.
+
+update_counter in handle_call:
+
+iex(1)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1806 ms, TPS: 553709.8560354374.
+:ok
+iex(2)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1829 ms, TPS: 546746.8562055768.
+:ok
+iex(3)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1839 ms, TPS: 543773.790103317.
+:ok
+iex(4)> EtsTest.bench 500, 10000
+total: 5000000, elapsed: 10755 ms, TPS: 464900.04649000464.
+:ok
+
+
+---------------------------------------------------------
+update_counter in handle_cast
+
+iex(1)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 268 ms, TPS: 3731343.2835820895.
+:ok
+iex(2)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 263 ms, TPS: 3802281.3688212926.
+:ok
+iex(3)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 266 ms, TPS: 3759398.4962406014.
+:ok
+iex(4)> EtsTest.bench 500, 10000
+total: 5000000, elapsed: 1616 ms, TPS: 3094059.405940594.
+:ok
+
+----------------------------------------------------------
+update_counter in inc with write_concurrency=true:
+
+iex(10)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1215 ms, TPS: 823045.267489712.
+:ok
+iex(11)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1086 ms, TPS: 920810.3130755065.
+:ok
+iex(12)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 1113 ms, TPS: 898472.5965858041.
+:ok
+
+iex(13)> EtsTest.bench 500, 10000
+total: 5000000, elapsed: 5600 ms, TPS: 892857.1428571428.
+:ok
+
+----------------------------------------------------------
+update_counter in inc with write_concurrency=false:
+
+
+iex(1)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 5888 ms, TPS: 169836.95652173914.
+:ok
+iex(2)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 5963 ms, TPS: 167700.8217340265.
+:ok
+iex(3)> EtsTest.bench 100, 10000
+total: 1000000, elapsed: 5921 ms, TPS: 168890.39013680123.
+:ok
+iex(4)> EtsTest.bench 500, 10000
+total: 5000000, elapsed: 31462 ms, TPS: 158921.87400673828.
+
+
+handle_cast > write_concurrency=true > handle_call > write_concurrency=false
